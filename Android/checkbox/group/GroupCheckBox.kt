@@ -1,98 +1,97 @@
-1    package pl.gov.coi.common.ui.ds.checkbox.group
-2    
-3    import androidx.compose.foundation.background
-4    import androidx.compose.foundation.layout.Box
-5    import androidx.compose.foundation.layout.Column
-6    import androidx.compose.foundation.layout.ColumnScope
-7    import androidx.compose.foundation.layout.Row
-8    import androidx.compose.foundation.layout.Spacer
-9    import androidx.compose.foundation.layout.fillMaxSize
-10   import androidx.compose.foundation.layout.height
-11   import androidx.compose.foundation.layout.padding
-12   import androidx.compose.foundation.layout.width
-13   import androidx.compose.runtime.Composable
-14   import androidx.compose.ui.Alignment
-15   import androidx.compose.ui.Modifier
-16   import androidx.compose.ui.text.style.TextAlign
-17   import androidx.compose.ui.tooling.preview.Preview
-18   import androidx.compose.ui.tooling.preview.PreviewParameter
-19   import pl.gov.coi.common.domain.label.Label
-20   import pl.gov.coi.common.ui.R
-21   import pl.gov.coi.common.ui.ds.checkbox.common.CheckBoxBottomText
-22   import pl.gov.coi.common.ui.ds.checkbox.common.CheckboxRow
-23   import pl.gov.coi.common.ui.ds.checkbox.common.model.CheckboxContentType
-24   import pl.gov.coi.common.ui.ds.checkbox.group.model.CheckBoxGroupData
-25   import pl.gov.coi.common.ui.ds.button.buttonicon.ButtonIcon
-26   import pl.gov.coi.common.ui.ds.button.buttonicon.ButtonIconData
-27   import pl.gov.coi.common.ui.ds.contentbox.ContentBox
-28   import pl.gov.coi.common.ui.text.CustomText
-29   import pl.gov.coi.common.ui.theme.AppTheme
-30   
-31   @Composable
-32   fun CheckBoxGroup(data: CheckBoxGroupData) {
-33     Column {
-34       data.header?.let { header ->
-35         LabelRow(
-36           label = header.label,
-37           onHelperButtonClick = header.onClick,
-38         )
-39       }
-40       when (data.contentType) {
-41         CheckboxContentType.CONTENT_BOX -> ContentBox {
-42           GroupCheckBoxContainerContent(data)
-43         }
-44   
-45         CheckboxContentType.DEFAULT -> GroupCheckBoxContainerContent(data)
-46       }
-47     }
-48   }
-49   
-50   @Composable
-51   private fun GroupCheckBoxContainerContent(data: CheckBoxGroupData) {
-52     Column {
-53       data.checkboxes.forEachIndexed { index, checkboxData ->
-54         CheckboxRow(data = checkboxData, type = data.type, isEnabled = data.isEnabled)
-55         if (index != data.checkboxes.lastIndex) {
-56           Spacer(modifier = Modifier.height(AppTheme.dimensions.spacing250))
-57         }
-58       }
-59       CheckBoxBottomText(data.type)
-60     }
-61   }
-62   
-63   @Composable
-64   private fun ColumnScope.LabelRow(label: Label, onHelperButtonClick: (() -> Unit)?) {
-65     Row(verticalAlignment = Alignment.CenterVertically) {
-66       CustomText(
-67         textAlign = TextAlign.Start,
-68         label = label,
-69         style = AppTheme.typography.subtitleMedium,
-70         color = AppTheme.colors.neutral500,
-71       )
-72       onHelperButtonClick?.let { onClick ->
-73         Spacer(modifier = Modifier.width(AppTheme.dimensions.spacing50))
-74         ButtonIcon(
-75           data = ButtonIconData(
-76             iconResId = R.drawable.ab015_help,
-77             onClick = onClick,
-78             iconColorProvider = { AppTheme.colors.primary900 },
-79           ),
-80         )
-81       }
-82     }
-83     Spacer(modifier = Modifier.height(AppTheme.dimensions.spacing200))
-84   }
-85   
-86   @Composable
-87   @Preview
-88   fun GroupCheckBoxPreview(@PreviewParameter(GroupCheckBoxPPP::class) data: CheckBoxGroupData) {
-89     Box(
-90       modifier = Modifier
-91         .background(AppTheme.colors.background)
-92         .padding(AppTheme.dimensions.spacing200)
-93         .fillMaxSize(),
-94     ) {
-95       CheckBoxGroup(data)
-96     }
-97   }
-98   
+package pl.gov.coi.common.ui.ds.checkbox.group
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import pl.gov.coi.common.domain.label.Label
+import pl.gov.coi.common.ui.R
+import pl.gov.coi.common.ui.ds.checkbox.common.CheckBoxBottomText
+import pl.gov.coi.common.ui.ds.checkbox.common.CheckboxRow
+import pl.gov.coi.common.ui.ds.checkbox.common.model.CheckboxContentType
+import pl.gov.coi.common.ui.ds.checkbox.group.model.CheckBoxGroupData
+import pl.gov.coi.common.ui.ds.button.buttonicon.ButtonIcon
+import pl.gov.coi.common.ui.ds.button.buttonicon.ButtonIconData
+import pl.gov.coi.common.ui.ds.contentbox.ContentBox
+import pl.gov.coi.common.ui.text.CustomText
+import pl.gov.coi.common.ui.theme.AppTheme
+
+@Composable
+fun CheckBoxGroup(data: CheckBoxGroupData) {
+  Column {
+    data.header?.let { header ->
+      LabelRow(
+        label = header.label,
+        onHelperButtonClick = header.onClick,
+      )
+    }
+    when (data.contentType) {
+      CheckboxContentType.CONTENT_BOX -> ContentBox {
+        GroupCheckBoxContainerContent(data)
+      }
+
+      CheckboxContentType.DEFAULT -> GroupCheckBoxContainerContent(data)
+    }
+  }
+}
+
+@Composable
+private fun GroupCheckBoxContainerContent(data: CheckBoxGroupData) {
+  Column {
+    data.checkboxes.forEachIndexed { index, checkboxData ->
+      CheckboxRow(data = checkboxData, type = data.type, isEnabled = data.isEnabled)
+      if (index != data.checkboxes.lastIndex) {
+        Spacer(modifier = Modifier.height(AppTheme.dimensions.spacing250))
+      }
+    }
+    CheckBoxBottomText(data.type)
+  }
+}
+
+@Composable
+private fun ColumnScope.LabelRow(label: Label, onHelperButtonClick: (() -> Unit)?) {
+  Row(verticalAlignment = Alignment.CenterVertically) {
+    CustomText(
+      textAlign = TextAlign.Start,
+      label = label,
+      style = AppTheme.typography.subtitleMedium,
+      color = AppTheme.colors.neutral500,
+    )
+    onHelperButtonClick?.let { onClick ->
+      Spacer(modifier = Modifier.width(AppTheme.dimensions.spacing50))
+      ButtonIcon(
+        data = ButtonIconData(
+          iconResId = R.drawable.ab015_help,
+          onClick = onClick,
+          iconColorProvider = { AppTheme.colors.primary900 },
+        ),
+      )
+    }
+  }
+  Spacer(modifier = Modifier.height(AppTheme.dimensions.spacing200))
+}
+
+@Composable
+@Preview
+fun GroupCheckBoxPreview(@PreviewParameter(GroupCheckBoxPPP::class) data: CheckBoxGroupData) {
+  Box(
+    modifier = Modifier
+      .background(AppTheme.colors.background)
+      .padding(AppTheme.dimensions.spacing200)
+      .fillMaxSize(),
+  ) {
+    CheckBoxGroup(data)
+  }
+}

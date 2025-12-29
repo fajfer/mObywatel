@@ -1,101 +1,100 @@
-1    package pl.gov.coi.common.ui.ds.custom.singlecard.labelbuttonimage
-2    
-3    import android.graphics.Bitmap
-4    import android.graphics.BitmapFactory
-5    import android.util.Base64
-6    import androidx.compose.foundation.Image
-7    import androidx.compose.foundation.layout.Arrangement
-8    import androidx.compose.foundation.layout.Column
-9    import androidx.compose.foundation.layout.Row
-10   import androidx.compose.foundation.layout.Spacer
-11   import androidx.compose.foundation.layout.fillMaxWidth
-12   import androidx.compose.foundation.layout.height
-13   import androidx.compose.foundation.layout.size
-14   import androidx.compose.runtime.Composable
-15   import androidx.compose.ui.Alignment
-16   import androidx.compose.ui.Modifier
-17   import androidx.compose.ui.graphics.asImageBitmap
-18   import androidx.compose.ui.layout.ContentScale
-19   import androidx.compose.ui.tooling.preview.Preview
-20   import androidx.compose.ui.unit.dp
-21   import pl.gov.coi.common.domain.label.toLabel
-22   import pl.gov.coi.common.ui.ds.button.Button
-23   import pl.gov.coi.common.ui.ds.button.ButtonData
-24   import pl.gov.coi.common.ui.ds.button.common.ButtonSize
-25   import pl.gov.coi.common.ui.ds.button.common.ButtonType
-26   import pl.gov.coi.common.ui.ds.button.common.ButtonVariant
-27   import pl.gov.coi.common.ui.text.CustomText
-28   import pl.gov.coi.common.ui.theme.AppTheme
-29   import pl.gov.coi.common.ui.unmapped.singlecard.CustomContent
-30   import pl.gov.coi.common.ui.unmapped.singlecard.CustomSingleCardData
-31   import pl.gov.coi.common.ui.unmapped.singlecard.MediaSection
-32   import pl.gov.coi.common.ui.unmapped.singlecard.SingleCard
-33   
-34   class LabelButtonImageSingleCard(val data: LabelButtonImageSingleCardData) : CustomContent {
-35     @Composable
-36     override fun Content() {
-37       Row(
-38         horizontalArrangement = Arrangement.SpaceBetween,
-39         verticalAlignment = Alignment.CenterVertically,
-40         modifier = Modifier.fillMaxWidth(),
-41       ) {
-42         Column {
-43           data.label?.let { label ->
-44             CustomText(
-45               label = label,
-46               style = AppTheme.typography.bodyMediumRegular,
-47               color = AppTheme.colors.neutral200,
-48             )
-49             Spacer(modifier = Modifier.height(AppTheme.dimensions.spacing50))
-50           }
-51           Image(
-52             contentScale = ContentScale.FillBounds,
-53             modifier = Modifier.size(100.dp),
-54             bitmap = data.qrCodeImage.bitmap.asImageBitmap(),
-55             contentDescription = data.qrCodeImage.contentDescription?.text,
-56           )
-57         }
-58         Button(data = data.buttonData)
-59       }
-60     }
-61   }
-62   
-63   @Composable
-64   @Preview
-65   fun QrCodeCustomSingleCardPreview() {
-66     SingleCard(
-67       singleCardData = CustomSingleCardData(
-68         oldTestTag = "qrCodeCard".toLabel(tag = "qrCodeCard"),
-69         customContent =
-70         LabelButtonImageSingleCard(
-71           data = LabelButtonImageSingleCardData(
-72             label = "Kod QR".toLabel(tag = "qrCodeButton"),
-73             buttonData = ButtonData(
-74               buttonSize = ButtonSize.Small,
-75               buttonType = ButtonType.WithText(
-76                 label = "Powiększ kod QR".toLabel(tag = "zoomInQrCodeButton"),
-77               ),
-78               buttonVariant = ButtonVariant.Primary,
-79               onClick = {},
-80             ),
-81             qrCodeImage = MediaSection.Image(
-82               bitmap = provideBitmap(value = qrCodeValue),
-83             ),
-84           ),
-85         ),
-86       ),
-87     )
-88   }
-89   
-90   private fun provideBitmap(value: String): Bitmap {
-91     val picture = Base64.decode(value, Base64.NO_WRAP)
-92     return BitmapFactory
-93       .decodeByteArray(picture, 0, picture.size)
-94   }
-95   
-96   private val qrCodeValue =
-97     "iVBORw0KGgoAAAANSUhEUgAAAH0AAAB9AQAAAACn+1GIAAAApklEQVR4Xu2UMQ4EMQgD/QP+/0vK6zjsvayUMm" +
-98       "avWxQpMAUBkwS12wcveAAkgNSCD3rR5Lkgoai3GUCMgWqbAEYR3HxAkZlzU/0MyBisYRs" +
-99       "gI1ERFfcpBpA+ze6k56Cj7KTdXNigFWZvSOpsgqLfd" +
-100      "18i2aAukXh9TXBNmdWt5gzA/oqzWkkN8HtA7G8CNOwYAiZt3wZixUfkA32OHNQq7Bxs9oI/gC/9fV8AVCkPjQAAAABJRU5ErkJggg=="
-101  
+package pl.gov.coi.common.ui.ds.custom.singlecard.labelbuttonimage
+
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.util.Base64
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import pl.gov.coi.common.domain.label.toLabel
+import pl.gov.coi.common.ui.ds.button.Button
+import pl.gov.coi.common.ui.ds.button.ButtonData
+import pl.gov.coi.common.ui.ds.button.common.ButtonSize
+import pl.gov.coi.common.ui.ds.button.common.ButtonType
+import pl.gov.coi.common.ui.ds.button.common.ButtonVariant
+import pl.gov.coi.common.ui.text.CustomText
+import pl.gov.coi.common.ui.theme.AppTheme
+import pl.gov.coi.common.ui.unmapped.singlecard.CustomContent
+import pl.gov.coi.common.ui.unmapped.singlecard.CustomSingleCardData
+import pl.gov.coi.common.ui.unmapped.singlecard.MediaSection
+import pl.gov.coi.common.ui.unmapped.singlecard.SingleCard
+
+class LabelButtonImageSingleCard(val data: LabelButtonImageSingleCardData) : CustomContent {
+  @Composable
+  override fun Content() {
+    Row(
+      horizontalArrangement = Arrangement.SpaceBetween,
+      verticalAlignment = Alignment.CenterVertically,
+      modifier = Modifier.fillMaxWidth(),
+    ) {
+      Column {
+        data.label?.let { label ->
+          CustomText(
+            label = label,
+            style = AppTheme.typography.bodyMediumRegular,
+            color = AppTheme.colors.neutral200,
+          )
+          Spacer(modifier = Modifier.height(AppTheme.dimensions.spacing50))
+        }
+        Image(
+          contentScale = ContentScale.FillBounds,
+          modifier = Modifier.size(100.dp),
+          bitmap = data.qrCodeImage.bitmap.asImageBitmap(),
+          contentDescription = data.qrCodeImage.contentDescription?.text,
+        )
+      }
+      Button(data = data.buttonData)
+    }
+  }
+}
+
+@Composable
+@Preview
+fun QrCodeCustomSingleCardPreview() {
+  SingleCard(
+    singleCardData = CustomSingleCardData(
+      oldTestTag = "qrCodeCard".toLabel(tag = "qrCodeCard"),
+      customContent =
+      LabelButtonImageSingleCard(
+        data = LabelButtonImageSingleCardData(
+          label = "Kod QR".toLabel(tag = "qrCodeButton"),
+          buttonData = ButtonData(
+            buttonSize = ButtonSize.Small,
+            buttonType = ButtonType.WithText(
+              label = "Powiększ kod QR".toLabel(tag = "zoomInQrCodeButton"),
+            ),
+            buttonVariant = ButtonVariant.Primary,
+            onClick = {},
+          ),
+          qrCodeImage = MediaSection.Image(
+            bitmap = provideBitmap(value = qrCodeValue),
+          ),
+        ),
+      ),
+    ),
+  )
+}
+
+private fun provideBitmap(value: String): Bitmap {
+  val picture = Base64.decode(value, Base64.NO_WRAP)
+  return BitmapFactory
+    .decodeByteArray(picture, 0, picture.size)
+}
+
+private val qrCodeValue =
+  "iVBORw0KGgoAAAANSUhEUgAAAH0AAAB9AQAAAACn+1GIAAAApklEQVR4Xu2UMQ4EMQgD/QP+/0vK6zjsvayUMm" +
+    "avWxQpMAUBkwS12wcveAAkgNSCD3rR5Lkgoai3GUCMgWqbAEYR3HxAkZlzU/0MyBisYRs" +
+    "gI1ERFfcpBpA+ze6k56Cj7KTdXNigFWZvSOpsgqLfd" +
+    "18i2aAukXh9TXBNmdWt5gzA/oqzWkkN8HtA7G8CNOwYAiZt3wZixUfkA32OHNQq7Bxs9oI/gC/9fV8AVCkPjQAAAABJRU5ErkJggg=="

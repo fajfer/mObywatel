@@ -1,77 +1,76 @@
-1    package pl.gov.coi.common.ui.ds.custom.documentrow.provider
-2    
-3    import android.content.Context
-4    import androidx.compose.ui.res.colorResource
-5    import pl.gov.coi.common.domain.Mapper
-6    import pl.gov.coi.common.domain.label.toLabel
-7    import pl.gov.coi.common.ui.R
-8    import pl.gov.coi.common.ui.ds.custom.documentrow.DocumentRowData
-9    import pl.gov.coi.common.ui.ds.statusbadge.StatusBadgeData
-10   import pl.gov.coi.common.ui.ds.statusbadge.StatusBadgeWithIconStatus
-11   import pl.gov.coi.common.ui.preview.CustomWrappedDataPreviewParameterProvider
-12   import pl.gov.coi.common.ui.preview.ScreenShotTestDataProvider
-13   import pl.gov.coi.common.ui.preview.WrappedValue
-14   
-15   data class ProvidedSingleCardDocumentRowData(
-16     val previewName: String,
-17     val data: DocumentRowData,
-18   )
-19   
-20   class SingleCardDocumentRowPPP : CustomWrappedDataPreviewParameterProvider
-21     <Unit, DocumentRowData, Mapper<Unit, DocumentRowData>, ProvidedSingleCardDocumentRowData>() {
-22   
-23     override fun mapper(context: Context): Mapper<Unit, DocumentRowData> {
-24       return object : Mapper<Unit, DocumentRowData> {
-25         override fun invoke(p1: Unit): DocumentRowData = getSingleCardDocument()
-26       }
-27     }
-28   
-29     private val cards = mapOf(
-30       "SingleCardDocumentRow" to getSingleCardDocument(),
-31       "SingleCardDocumentRowWithDescription" to getSingleCardDocumentWithDescription(),
-32       "SingleCardDocumentRowWithStatus" to getSingleCardDocumentWithStatus(),
-33       "SingleCardDocumentRowWithDescriptionStatus" to getSingleCardDocumentWithDescriptionStatus(),
-34     )
-35   
-36     override val screenShotTestValues: Sequence<ScreenShotTestDataProvider<ProvidedSingleCardDocumentRowData>>
-37       get() = cards.map { (testName, cardData) ->
-38         ScreenShotTestDataProvider(
-39           screenShotTestName = testName,
-40           wrappedValue = WrappedValue {
-41             ProvidedSingleCardDocumentRowData(
-42               previewName = testName,
-43               data = cardData,
-44             )
-45           },
-46         )
-47       }.asSequence()
-48   
-49     private fun getSingleCardDocument() = DocumentRowData(
-50       title = "Legitymacja poselska".toLabel(),
-51       iconColorProvider = { colorResource(id = R.color.coi_mobywatel_feature_dashboard_deputy_card_primary) },
-52       iconResId = R.drawable.db012_legitymacja_poselska,
-53       badgeData = null,
-54       onClick = {},
-55     )
-56   
-57     private fun getSingleCardDocumentWithDescription() = getSingleCardDocument().copy(
-58       description = "Opis dokumentu".toLabel(),
-59     )
-60   
-61     private fun getSingleCardDocumentWithStatus() = getSingleCardDocument().copy(
-62       badgeData = StatusBadgeData.WithIcon(
-63         label = "Błąd pobierania".toLabel(),
-64         withBorder = false,
-65         status = StatusBadgeWithIconStatus.NEGATIVE,
-66       ),
-67     )
-68   
-69     private fun getSingleCardDocumentWithDescriptionStatus() = getSingleCardDocumentWithDescription().copy(
-70       badgeData = StatusBadgeData.WithIcon(
-71         label = "Błąd pobierania".toLabel(),
-72         withBorder = false,
-73         status = StatusBadgeWithIconStatus.NEGATIVE,
-74       ),
-75     )
-76   }
-77   
+package pl.gov.coi.common.ui.ds.custom.documentrow.provider
+
+import android.content.Context
+import androidx.compose.ui.res.colorResource
+import pl.gov.coi.common.domain.Mapper
+import pl.gov.coi.common.domain.label.toLabel
+import pl.gov.coi.common.ui.R
+import pl.gov.coi.common.ui.ds.custom.documentrow.DocumentRowData
+import pl.gov.coi.common.ui.ds.statusbadge.StatusBadgeData
+import pl.gov.coi.common.ui.ds.statusbadge.StatusBadgeWithIconStatus
+import pl.gov.coi.common.ui.preview.CustomWrappedDataPreviewParameterProvider
+import pl.gov.coi.common.ui.preview.ScreenShotTestDataProvider
+import pl.gov.coi.common.ui.preview.WrappedValue
+
+data class ProvidedSingleCardDocumentRowData(
+  val previewName: String,
+  val data: DocumentRowData,
+)
+
+class SingleCardDocumentRowPPP : CustomWrappedDataPreviewParameterProvider
+  <Unit, DocumentRowData, Mapper<Unit, DocumentRowData>, ProvidedSingleCardDocumentRowData>() {
+
+  override fun mapper(context: Context): Mapper<Unit, DocumentRowData> {
+    return object : Mapper<Unit, DocumentRowData> {
+      override fun invoke(p1: Unit): DocumentRowData = getSingleCardDocument()
+    }
+  }
+
+  private val cards = mapOf(
+    "SingleCardDocumentRow" to getSingleCardDocument(),
+    "SingleCardDocumentRowWithDescription" to getSingleCardDocumentWithDescription(),
+    "SingleCardDocumentRowWithStatus" to getSingleCardDocumentWithStatus(),
+    "SingleCardDocumentRowWithDescriptionStatus" to getSingleCardDocumentWithDescriptionStatus(),
+  )
+
+  override val screenShotTestValues: Sequence<ScreenShotTestDataProvider<ProvidedSingleCardDocumentRowData>>
+    get() = cards.map { (testName, cardData) ->
+      ScreenShotTestDataProvider(
+        screenShotTestName = testName,
+        wrappedValue = WrappedValue {
+          ProvidedSingleCardDocumentRowData(
+            previewName = testName,
+            data = cardData,
+          )
+        },
+      )
+    }.asSequence()
+
+  private fun getSingleCardDocument() = DocumentRowData(
+    title = "Legitymacja poselska".toLabel(),
+    iconColorProvider = { colorResource(id = R.color.coi_mobywatel_feature_dashboard_deputy_card_primary) },
+    iconResId = R.drawable.db012_legitymacja_poselska,
+    badgeData = null,
+    onClick = {},
+  )
+
+  private fun getSingleCardDocumentWithDescription() = getSingleCardDocument().copy(
+    description = "Opis dokumentu".toLabel(),
+  )
+
+  private fun getSingleCardDocumentWithStatus() = getSingleCardDocument().copy(
+    badgeData = StatusBadgeData.WithIcon(
+      label = "Błąd pobierania".toLabel(),
+      withBorder = false,
+      status = StatusBadgeWithIconStatus.NEGATIVE,
+    ),
+  )
+
+  private fun getSingleCardDocumentWithDescriptionStatus() = getSingleCardDocumentWithDescription().copy(
+    badgeData = StatusBadgeData.WithIcon(
+      label = "Błąd pobierania".toLabel(),
+      withBorder = false,
+      status = StatusBadgeWithIconStatus.NEGATIVE,
+    ),
+  )
+}

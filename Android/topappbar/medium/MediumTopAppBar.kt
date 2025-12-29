@@ -1,75 +1,74 @@
-1    package pl.gov.coi.common.ui.ds.topappbar.medium
-2    
-3    import androidx.compose.foundation.layout.Arrangement
-4    import androidx.compose.foundation.layout.Row
-5    import androidx.compose.foundation.layout.fillMaxWidth
-6    import androidx.compose.material3.ExperimentalMaterial3Api
-7    import androidx.compose.material3.MediumTopAppBar
-8    import androidx.compose.material3.TopAppBarDefaults
-9    import androidx.compose.material3.TopAppBarScrollBehavior
-10   import androidx.compose.runtime.Composable
-11   import androidx.compose.ui.Modifier
-12   import androidx.compose.ui.semantics.heading
-13   import androidx.compose.ui.semantics.semantics
-14   import androidx.compose.ui.text.style.TextOverflow
-15   import pl.gov.coi.common.ui.ds.topappbar.CreateMenuButtons
-16   import pl.gov.coi.common.ui.ds.topappbar.CreateNavigationButton
-17   import pl.gov.coi.common.ui.ds.topappbar.TEXT_MAX_ONE_LINE
-18   import pl.gov.coi.common.ui.ds.topappbar.TopAppBarData
-19   import pl.gov.coi.common.ui.ds.topappbar.forceFocusOnStart
-20   import pl.gov.coi.common.ui.focus.FocusHost.Companion.focusHost
-21   import pl.gov.coi.common.ui.text.CustomText
-22   import pl.gov.coi.common.ui.theme.AppTheme
-23   
-24   @OptIn(ExperimentalMaterial3Api::class)
-25   @Composable
-26   internal fun MediumTopAppBar(
-27     data: TopAppBarData.Medium,
-28     scrollBehavior: TopAppBarScrollBehavior,
-29   ) {
-30     MediumTopAppBar(
-31       colors = TopAppBarDefaults.topAppBarColors(
-32         containerColor = data.containerColor(),
-33         scrolledContainerColor = data.containerColor(),
-34       ),
-35       title = {
-36         if (scrollBehavior.state.collapsedFraction < 0.35) {
-37           CustomText(
-38             modifier = Modifier
-39               .semantics {
-40                 heading()
-41               }
-42               .focusHost(forceFocusOnStart(data.forceTitleFocusTrigger)),
-43             label = data.title,
-44             color = AppTheme.colors.neutral500,
-45             style = AppTheme.typography.headlineLargeMedium,
-46             overflow = TextOverflow.Ellipsis,
-47             maxLines = TEXT_MAX_ONE_LINE,
-48           )
-49         }
-50         if (scrollBehavior.state.collapsedFraction > 0.75) {
-51           Row(
-52             modifier = Modifier.fillMaxWidth(),
-53             horizontalArrangement = Arrangement.Center,
-54           ) {
-55             CustomText(
-56               modifier = Modifier.semantics {
-57                 heading()
-58               },
-59               label = data.title,
-60               color = AppTheme.colors.neutral500,
-61               style = AppTheme.typography.subtitleMedium,
-62               overflow = TextOverflow.Ellipsis,
-63               maxLines = TEXT_MAX_ONE_LINE,
-64             )
-65           }
-66         }
-67       },
-68       navigationIcon = { data.navigationButtonData.CreateNavigationButton() },
-69       actions = {
-70         data.menuType.CreateMenuButtons()
-71       },
-72       scrollBehavior = scrollBehavior,
-73     )
-74   }
-75   
+package pl.gov.coi.common.ui.ds.topappbar.medium
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MediumTopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.style.TextOverflow
+import pl.gov.coi.common.ui.ds.topappbar.CreateMenuButtons
+import pl.gov.coi.common.ui.ds.topappbar.CreateNavigationButton
+import pl.gov.coi.common.ui.ds.topappbar.TEXT_MAX_ONE_LINE
+import pl.gov.coi.common.ui.ds.topappbar.TopAppBarData
+import pl.gov.coi.common.ui.ds.topappbar.forceFocusOnStart
+import pl.gov.coi.common.ui.focus.FocusHost.Companion.focusHost
+import pl.gov.coi.common.ui.text.CustomText
+import pl.gov.coi.common.ui.theme.AppTheme
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+internal fun MediumTopAppBar(
+  data: TopAppBarData.Medium,
+  scrollBehavior: TopAppBarScrollBehavior,
+) {
+  MediumTopAppBar(
+    colors = TopAppBarDefaults.topAppBarColors(
+      containerColor = data.containerColor(),
+      scrolledContainerColor = data.containerColor(),
+    ),
+    title = {
+      if (scrollBehavior.state.collapsedFraction < 0.35) {
+        CustomText(
+          modifier = Modifier
+            .semantics {
+              heading()
+            }
+            .focusHost(forceFocusOnStart(data.forceTitleFocusTrigger)),
+          label = data.title,
+          color = AppTheme.colors.neutral500,
+          style = AppTheme.typography.headlineLargeMedium,
+          overflow = TextOverflow.Ellipsis,
+          maxLines = TEXT_MAX_ONE_LINE,
+        )
+      }
+      if (scrollBehavior.state.collapsedFraction > 0.75) {
+        Row(
+          modifier = Modifier.fillMaxWidth(),
+          horizontalArrangement = Arrangement.Center,
+        ) {
+          CustomText(
+            modifier = Modifier.semantics {
+              heading()
+            },
+            label = data.title,
+            color = AppTheme.colors.neutral500,
+            style = AppTheme.typography.subtitleMedium,
+            overflow = TextOverflow.Ellipsis,
+            maxLines = TEXT_MAX_ONE_LINE,
+          )
+        }
+      }
+    },
+    navigationIcon = { data.navigationButtonData.CreateNavigationButton() },
+    actions = {
+      data.menuType.CreateMenuButtons()
+    },
+    scrollBehavior = scrollBehavior,
+  )
+}

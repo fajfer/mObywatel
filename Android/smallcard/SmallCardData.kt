@@ -1,24 +1,23 @@
-1    package pl.gov.coi.common.ui.ds.smallcard
-2    
-3    import androidx.annotation.DrawableRes
-4    import androidx.compose.runtime.Composable
-5    import androidx.compose.ui.graphics.Color
-6    import pl.gov.coi.common.domain.label.Label
-7    import pl.gov.coi.common.ui.ds.custom.icon.IconData
-8    import pl.gov.coi.common.ui.ds.custom.icon.IconSize
-9    
-10   data class SmallCardData(
-11     val title: Label,
-12     @DrawableRes val iconResId: Int,
-13     val iconColorProvider: @Composable () -> Color = { Color.Unspecified },
-14     val indexTag: Int? = null,
-15     val onClick: () -> Unit,
-16   ) {
-17     internal val iconData: IconData = IconData.Standard(
-18       iconResId = iconResId,
-19       iconSize = IconSize.SIZE32,
-20       iconColorProvider = iconColorProvider,
-21       contentDescription = Label.EMPTY,
-22     )
-23   }
-24   
+package pl.gov.coi.common.ui.ds.smallcard
+
+import androidx.annotation.DrawableRes
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import pl.gov.coi.common.domain.label.Label
+import pl.gov.coi.common.ui.ds.custom.icon.IconData
+import pl.gov.coi.common.ui.ds.custom.icon.IconSize
+
+data class SmallCardData(
+  val title: Label,
+  @DrawableRes val iconResId: Int,
+  val iconColorProvider: @Composable () -> Color = { Color.Unspecified },
+  val indexTag: Int? = null,
+  val onClick: () -> Unit,
+) {
+  internal val iconData: IconData = IconData.Standard(
+    iconResId = iconResId,
+    iconSize = IconSize.SIZE32,
+    iconColorProvider = iconColorProvider,
+    contentDescription = Label.EMPTY,
+  )
+}
