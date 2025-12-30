@@ -3,11 +3,11 @@
 
 Dnia 29.12.2025 zostało hucznie ogłoszone opublikowanie kodu źródłowego mObywatela
 
-Co dokładnie dostaliśmy? Zgodnie z obowiązkiem ustawowym wynikającym z ustawy z dnia 26 maja 2023 r. o aplikacji mObywatel (Dz. U. z 2023 r. poz. 1234)
+Co dokładnie dostaliśmy? Zgodnie z obowiązkiem ustawowym wynikającym z ustawy z dnia 26 maja 2023 r. o aplikacji mObywatel (Dz. U. z 2023 r. poz. 1234):
 
-- [Stronę z kodem](https://www.mobywatel.gov.pl/kod-zrodlowy-mobywatel-mobilny) do której należy się zalogować profilem zaufanym
-- Galerię do przeglądania części assetów oraz samego kodu (na [licencji MIT](LICENSE.md)) dotyczącego design systemu aplikacji mObywatel, tj. komponenty UI, użyte kolory, style, piktogramy
-  - Zablokowany jest prawy przycisk myszy, należy użyć dodatku takiego jak na przykład [Allow Right Click](https://webextension.org/listing/allow-right-click.html)
+- [stronę z kodem](https://www.mobywatel.gov.pl/kod-zrodlowy-mobywatel-mobilny), do której należy się zalogować mObywatelem/profilem zaufanym/bankiem/eID,
+- galerię do przeglądania części assetów oraz samego kodu (na [licencji MIT](LICENSE.md)) dotyczącego designu systemu aplikacji mObywatel, tj. komponenty UI, użyte kolory, style, piktogramy,
+  - zablokowany prawy przycisk myszy, który odblokować można dodatkiem takim jak na przykład [Allow Right Click](https://webextension.org/listing/allow-right-click.html)
 
 Oznacza to, że nie zostały opublikowane takie rzeczy jak:
 - logika biznesowa, w żadnym zakresie
@@ -15,7 +15,7 @@ Oznacza to, że nie zostały opublikowane takie rzeczy jak:
 - moduł uwierzytelnia
 - dokumentacja
 
-Wyobraźmy sobie, że mObywatel jest wielkim kompleksem budowli, mieliśmy poznać sekrety tego kompleksu. Zamiast tego, dowiedzieliśmy się jaka farba została użyta do pomalowania fasady obiektu.
+Wyobraźmy sobie, że mObywatel jest wielkim kompleksem budowli, mieliśmy poznać sekrety tego kompleksu - zamiast tego dowiedzieliśmy się, jaka farba została użyta do pomalowania fasady obiektu...
 
 ## Jak ściągnąć kod samemu
 
@@ -52,4 +52,4 @@ Kod źródłowy aplikacji mObywatel został udostępniony do publicznego wglądu
 ### Analizujemy opinię CSIRT MON w sprawie publikacji kodu mObywatela
 Źródło: https://kontrabanda.net/r/analizujemy-opinie-csirt-mon-w-sprawie-publikacji-kodu-mobywatela/
 
-Artykuł zawiera kopię pdf opinii CSIRT MON w tej sprawie
+Artykuł zawiera kopię .pdf opinii CSIRT MON w tej sprawie.

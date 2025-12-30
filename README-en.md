@@ -1,11 +1,11 @@
 # mObywatel Mobile
 On December 29, 2025, the publication of mObywatel's source code was announced.
 
-What exactly did we get? In accordance with the legal obligation arising from the Act of May 26, 2023 on the mObywatel application (Journal of Laws of 2023, item 1234)
+What exactly did we get? In accordance with the legal obligation arising from the Act of May 26, 2023 on the mObywatel application (Journal of Laws of 2023, item 1234):
 
-- [Code page](https://www.mobywatel.gov.pl/kod-zrodlowy-mobywatel-mobilny) which requires logging in with a [Trusted Profile](https://pl.wikipedia.org/wiki/Profil_zaufany)
-- Gallery for browsing part of the assets and the code itself ([MIT license](LICENSE.md)) concerning the design system of the mObywatel application, i.e. UI components, colours, styles, icons
-  - Right-click is blocked, you need to use an add-on such as [Allow Right Click](https://webextension.org/listing/allow-right-click.html)
+- [The code page](https://www.mobywatel.gov.pl/kod-zrodlowy-mobywatel-mobilny), which requires logging in with mObywatel/a [trusted profile](https://pl.wikipedia.org/wiki/Profil_zaufany)/a Polish bank account/eID
+- A gallery for browsing some of the assets and the code itself, licensed under the ([MIT license](LICENSE.md)), limited to code concerning the design system of the mObywatel application, i.e. UI components, colours, styles, icons
+- The ability to right-click is blocked, you need to use an add-on such as [Allow Right Click](https://webextension.org/listing/allow-right-click.html)
 
 This means that things like these were not published:
 - business logic, in any scope
@@ -13,19 +13,19 @@ This means that things like these were not published:
 - authentication module
 - documentation
 
-Imagine that mObywatel is a large building complex, we were supposed to learn the secrets of this complex. Instead, we found out what paint was used to paint the facade of the building.
+Imagine that mObywatel is a large building complex. We were supposed to learn the secrets of this complex, and instead, we have found out what kind of paint was used to paint the facade of the building...
 
 ## How to download the code yourself
 
 | Script | Action |
 |--------|--------|
 | [mobywatel-downloader.user.js](mobywatel-downloader.user.js) | Downloading single/multiple files using the [Greasemonkey](https://addons.mozilla.org/pl/firefox/addon/greasemonkey/) add-on |
-| [organize_files.py](organize_files.py) | Placed in the same directory as the files from the script above, creates a directory tree |
+| [organize_files.py](organize_files.py) | Ran in the same directory as the files from the script above, it creates a directory tree |
 | [clean_line_numbers.py](clean_line_numbers.py) | Cleaning line numbers from the code |
 
 
 ## Media publications
-### Ministry of Digital Affairs published mObywatel's source code
+### Ministry of Digital Affairs published mObywatel's source code [pl]
 Source: https://www.gov.pl/web/cyfryzacja/ministerstwo-cyfryzacji-opublikowalo-kod-zrodlowy-mobywatela
 
 In accordance with the regulations, the Ministry of Digital Affairs made the source code of the mObywatel application available - thanks to this, everyone can better understand the government application that is already used by nearly 11 million Polish women and men.
@@ -35,7 +35,7 @@ The publication of information regarding the source code results from the Act of
 The link to the mObywatel application code was posted in the Bulletin of Public Information of the Ministry of Digital Affairs.
 
 ---
-### Source code of the mObywatel application
+### Source code of the mObywatel application [pl]
 Source: https://mc.bip.gov.pl/aplikacja-mobywatel/kod-zrodlowy-aplikacji-mobywatel.html
 
 In accordance with the legal obligation arising from the Act of May 26, 2023 on the mObywatel application (Journal of Laws of 2023, item 1234), the Ministry of Digital Affairs publishes information on the disclosure of the source code of the mObywatel application.
@@ -47,7 +47,7 @@ Access to the disclosed part of the source code of the mObywatel application is 
 The source code of the mObywatel application has been made available for public viewing on the website available at: https://www.mobywatel.gov.pl/kod-zrodlowy-mobywatel-mobilny
 
 ---
-### We analyze the opinion of CSIRT MON on the publication of the mObywatel code
+### We analyze the opinion of CSIRT MON on the publication of the mObywatel code [pl]
 Source: https://kontrabanda.net/r/analizujemy-opinie-csirt-mon-w-sprawie-publikacji-kodu-mobywatela/
 
-The article contains a PDF copy of the CSIRT MON opinion on subject matter
+The article contains a PDF copy of the CSIRT MON opinion on the subject matter.
