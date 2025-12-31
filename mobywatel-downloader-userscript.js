@@ -2,8 +2,8 @@
 // @name         mObywatel Source Code Downloader
 // @namespace    https://mobywatel.gov.pl/
 // @version      2.0
-// @description  Downloads source code of mObywatel (Android/iOS) as ZIP. Handles SPA navigation.
-// @author       fajfer ,n1ghtmare13
+// @description  Downloads source code of mObywatel (Android/iOS) with just a single button. 
+// @author       fajfer, n1ghtmare13
 // @license      MIT
 // @match        https://www.mobywatel.gov.pl/kod-zrodlowy-mobywatel-mobilny*
 // @grant        none
