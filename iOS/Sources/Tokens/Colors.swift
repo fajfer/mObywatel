@@ -1,6 +1,8 @@
 import SwiftUI
 
 
+
+
 public enum Colors {
   public enum Services {
     public enum Background {
@@ -26,13 +28,22 @@ public enum Colors {
 public extension Color {
 
 
+
+
+
   static let background = Color("background", bundle: .module)
+
 
 
   static let primary900 = Color("primary900", bundle: .module)
 
 
+
   static let secondary900 = Color("secondary900", bundle: .module)
+
+
+
+
 
 
   static let neutral500 = Color("neutral500", bundle: .module)
@@ -56,6 +67,9 @@ public extension Color {
   static let neutral10 = Color("neutral10", bundle: .module)
 
 
+
+
+
   static let decorativeGreen80 = Color("decorativeGreen80", bundle: .module)
 
 
@@ -69,6 +83,9 @@ public extension Color {
 
 
   static let decorativeBlue200 = Color("decorativeBlue200", bundle: .module)
+
+
+
 
 
   static let green20 = Color("green20", bundle: .module)
@@ -98,7 +115,11 @@ public extension Color {
   static let blue100 = Color("blue100", bundle: .module)
 
 
+
+
+
   static let secondary100 = Color("secondary100", bundle: .module)
+
 
 
   static let steel200 = Color("steel200", bundle: .module)
@@ -152,6 +173,10 @@ public extension Color {
   static let steel100 = Color("steel100", bundle: .module)
 
 
+
+
+
+
   static let sea200 = Color("sea200", bundle: .module)
 
 
@@ -176,10 +201,12 @@ public extension Color {
   static let burgundy200 = Color("burgundy200", bundle: .module)
 
 
+
   static let cornflower100 = Color("cornflower100", bundle: .module)
 
 
   static let sea400 = Color("sea400", bundle: .module)
+
 
 
   static let steel80 = Color("steel80", bundle: .module)
@@ -200,10 +227,16 @@ public extension Color {
   static let leafy200 = Color("leafy200", bundle: .module)
 
 
+
+
+
+
   static let leafy100 = Color("leafy100", bundle: .module)
 
 
+
   static let leafy30 = Color("leafy30", bundle: .module)
+
 
 
   static let purple100 = Color("purple100", bundle: .module)
@@ -212,10 +245,12 @@ public extension Color {
   static let purple30 = Color("purple30", bundle: .module)
 
 
+
   static let purple300 = Color("purple300", bundle: .module)
 
 
   static let purple40 = Color("purple40", bundle: .module)
+
 
 
   static let leafy60 = Color("leafy60", bundle: .module)
@@ -224,10 +259,12 @@ public extension Color {
   static let leafy20 = Color("leafy20", bundle: .module)
 
 
+
   static let pink100 = Color("pink100", bundle: .module)
 
 
   static let pink30 = Color("pink30", bundle: .module)
+
 
 
   static let snow100 = Color("snow100", bundle: .module)
@@ -236,16 +273,20 @@ public extension Color {
   static let snow30 = Color("snow30", bundle: .module)
 
 
+
   static let celadon100 = Color("celadon100", bundle: .module)
 
 
   static let celadon30 = Color("celadon30", bundle: .module)
 
 
+
+
   static let coral80 = Color("coral80", bundle: .module)
 
 
   static let coral20 = Color("coral20", bundle: .module)
+
 
 
   static let sea80 = Color("sea80", bundle: .module)
@@ -272,10 +313,12 @@ public extension Color {
   static let snow40 = Color("snow40", bundle: .module)
 
 
+
   static let pink200 = Color("pink200", bundle: .module)
 
 
   static let pink40 = Color("pink40", bundle: .module)
+
 
 
   static let raspberry100 = Color("raspberry100", bundle: .module)

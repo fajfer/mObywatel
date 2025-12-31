@@ -60,6 +60,7 @@ public struct InputTextField: View {
 private extension InputTextField {
 
 
+
   @ViewBuilder
   private var textField: some View {
     switch type {
@@ -82,6 +83,7 @@ private extension InputTextField {
       .accessibilityIdentifier(.textField)
     }
   }
+
 
 
   @ViewBuilder

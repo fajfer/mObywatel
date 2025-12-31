@@ -30,6 +30,12 @@ struct InputTextFieldSnapshotTests {
           .validation(validationMessage)
 
 
+
+
+
+
+
+
         InputTextField(type: .secure(true), text: text)
           .environment(\.isValid, false)
           .validation(validationMessage)
@@ -55,6 +61,10 @@ struct InputTextFieldSnapshotTests {
         )
 
         InputTextField(text: text)
+
+
+
+
 
 
         InputTextField(type: .secure(true), text: text)
