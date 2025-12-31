@@ -1,4 +1,3 @@
-
 import Foundation
 import SnapshotTesting
 import SwiftUI
@@ -44,6 +43,7 @@ struct SingleCardSnapshotTests {
     assertSnapshots(matching: SingleCardNavigationLinkView())
   }
 }
+
 
 
 private struct SingleCardBodySectionTestView: View {
@@ -96,6 +96,7 @@ private struct SingleCardBodySectionTestView: View {
     .background(Color.background.ignoresSafeArea())
   }
 }
+
 
 
 private struct SingleCardLeadingSectionTestView: View {
@@ -242,6 +243,7 @@ private struct SingleCardLeadingSectionTestView: View {
 }
 
 
+
 private struct SingleCardLeadingToggleSectionTestView: View {
   @Environment(\.appTheme) private var appTheme
 
@@ -324,6 +326,7 @@ private struct SingleCardLeadingToggleSectionTestView: View {
 }
 
 
+
 private struct SingleCardTopAndBottomSectionTestView: View {
   var body: some View {
     List {
@@ -357,6 +360,7 @@ private struct SingleCardTopAndBottomSectionTestView: View {
     .background(Color.background.ignoresSafeArea())
   }
 }
+
 
 
 private struct SingleCardTrailingSectionTestView: View {
@@ -426,6 +430,7 @@ private struct SingleCardTrailingSectionTestView: View {
     .background(Color.background.ignoresSafeArea())
   }
 }
+
 
 
 private struct SingleCardNavigationLinkView: View {

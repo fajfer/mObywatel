@@ -47,6 +47,7 @@ sealed class SwitchData(
   )
 
 
+
   class SwitchWithExtras(
     testTag: String? = null,
     checked: Boolean,

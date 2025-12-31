@@ -168,6 +168,7 @@ private extension TextArea {
 }
 
 
+
 private enum Constants {
   static let selectedBorderWidth = 2.0
   static let unselectedBorderWidth = 1.0

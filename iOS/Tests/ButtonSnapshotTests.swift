@@ -34,6 +34,7 @@ struct ButtonSnapshotTests {
 }
 
 
+
 private struct PrimaryButtonTestView: View {
   var body: some View {
     VStack(spacing: .spacing200) {
@@ -103,6 +104,7 @@ private struct PrimaryButtonTestView: View {
     .background(Color.background.ignoresSafeArea())
   }
 }
+
 
 
 private struct SecondaryButtonTestView: View {
@@ -176,6 +178,7 @@ private struct SecondaryButtonTestView: View {
 }
 
 
+
 private struct TertiaryButtonTestView: View {
   var body: some View {
     VStack(spacing: .spacing200) {
@@ -247,6 +250,7 @@ private struct TertiaryButtonTestView: View {
 }
 
 
+
 private struct TextButtonTestView: View {
   var body: some View {
     VStack(spacing: .spacing200) {
@@ -268,6 +272,7 @@ private struct TextButtonTestView: View {
     .background(Color.background.ignoresSafeArea())
   }
 }
+
 
 
 private struct IconButtonTestView: View {

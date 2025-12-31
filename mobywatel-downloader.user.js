@@ -1,580 +1,368 @@
 // ==UserScript==
-// @name         mObywatel Code Gallery Downloader
-// @namespace    http://tampermonkey.net/
-// @version      1.0
-// @description  Download source code files from mObywatel code gallery
-// @author       You
-// @match        https://mobywatel.gov.pl/*
-// @match        https://www.mobywatel.gov.pl/*
-// @grant        GM_download
-// @grant        GM_xmlhttpRequest
+// @name         mObywatel Source Code Downloader
+// @namespace    https://mobywatel.gov.pl/
+// @version      2.0
+// @description  Downloads source code of mObywatel (Android/iOS) with just a single button. 
+// @author       fajfer, n1ghtmare13
+// @license      MIT
+// @match        https://www.mobywatel.gov.pl/kod-zrodlowy-mobywatel-mobilny*
+// @grant        none
 // ==/UserScript==
+
+/**
+ * TECHNICAL COMPLIANCE NOTICE:
+ * 1. PRIVACY: This script operates 100% client-side. No data is transmitted to external servers.
+ * 2. SECURITY: This script does NOT bypass any authentication. User must be logged in via official Gov.pl channels.
+ * 3. METHODOLOGY: It uses standard DOM manipulation to automate visual tasks (expanding trees, reading iframes).
+ * 4. PURPOSE: Facilitates the exercise of rights granted by the MIT License attached to the source code by the authors (COI).
+*/
 
 (function() {
     'use strict';
 
-    // Function to get iframe document
-    function getIframeDocument() {
-        const iframe = document.querySelector('iframe[mogpblockcopy]');
-        if (iframe && iframe.contentDocument) {
-            return iframe.contentDocument;
-        }
-        return null;
-    }
+    // LICENSE provided by original source
+    const LICENSE_TEXT = `Licencja MIT
+    Copyright (c) 2025 Centralny Ośrodek Informatyki
 
-    // Function to get the current filename
-    function getCurrentFileName() {
-        // First try to get from iframe
-        const iframeDoc = getIframeDocument();
-        if (iframeDoc) {
-            const title = iframeDoc.querySelector('title');
-            if (title && title.textContent) {
-                return title.textContent.trim();
-            }
-        }
-        
-        // Try multiple selectors for filename in main document
-        const selectors = [
-            "body > table > tbody > tr > td > center > font",
-            "h1",
-            ".file-name",
-            ".filename",
-            "title",
-            "h2",
-            ".code-header",
-            ".file-header"
-        ];
-        
-        for (const selector of selectors) {
-            const element = document.querySelector(selector);
-            if (element) {
-                const text = element.innerText || element.textContent;
-                if (text && text.trim().length > 0) {
-                    return text.trim();
-                }
-            }
-        }
-        return "unknown-file.txt";
-    }
+    Niniejszym udziela się każdej osobie, która uzyska kopię tego oprogramowania
+    i powiązanej dokumentacji (dalej „Oprogramowanie”), bezpłatnie, prawa
+    do korzystania z Oprogramowania bez ograniczeń, w tym bez ograniczeń
+    prawa do używania, kopiowania, modyfikowania, łączenia, publikowania,
+    dystrybuowania, sublicencjonowania i/lub sprzedaży kopii Oprogramowania,
+    a także do zezwalania osobom, którym Oprogramowanie jest dostarczane,
+    na to samo, z zastrzeżeniem następujących warunków:
 
-    // Function to get file content (handles both code in <pre> and SVG)
-    function getFileContent() {
-        // First try to get from iframe
-        const iframeDoc = getIframeDocument();
-        if (iframeDoc) {
-            // Check for SVG content first - can be root element or in body
-            let svg = iframeDoc.querySelector('svg');
-            if (!svg && iframeDoc.documentElement && iframeDoc.documentElement.tagName.toLowerCase() === 'svg') {
-                svg = iframeDoc.documentElement;
-            }
-            if (svg) {
-                console.log('Found SVG content in iframe');
-                // Serialize the SVG properly
-                const serializer = new XMLSerializer();
-                const svgString = serializer.serializeToString(svg);
-                // Add XML declaration for proper SVG file
-                return '<?xml version="1.0" encoding="UTF-8"?>\n' + svgString;
-            }
-            
-            // Check for pre tag (code files)
-            const pre = iframeDoc.querySelector('pre');
-            if (pre && pre.textContent) {
-                console.log('Found content in iframe <pre> tag, length:', pre.textContent.length);
-                return pre.textContent;
-            }
-            
-            // Check for other content types (images as base64, etc)
-            const img = iframeDoc.querySelector('img');
-            if (img && img.src) {
-                console.log('Found image in iframe');
-                return img.src; // Return the image source/data URL
-            }
-            
-            // Fallback: get full HTML if nothing else matched (might be an HTML file)
-            const html = iframeDoc.documentElement;
-            if (html) {
-                const serializer = new XMLSerializer();
-                const htmlString = serializer.serializeToString(html);
-                if (htmlString && htmlString.length > 50) {
-                    console.log('Found HTML content in iframe, length:', htmlString.length);
-                    return htmlString;
-                }
-            }
-        }
-        
-        // Try to find the code/content in common structures in main document
-        const possibleSelectors = [
-            "pre",
-            "code",
-            ".code-content",
-            "#code-content",
-            ".source-code",
-            ".file-content",
-            "body > table > tbody > tr > td > pre",
-            "body > table > tbody > tr > td",
-            ".highlight",
-            ".syntax-highlight",
-            "[class*='code']",
-            "[class*='source']"
-        ];
+    Powyższa informacja o prawach autorskich oraz niniejsza zgoda muszą być
+    dołączone do wszystkich kopii lub istotnych części Oprogramowania.
 
-        for (const selector of possibleSelectors) {
-            const elements = document.querySelectorAll(selector);
-            for (const element of elements) {
-                const text = element.innerText || element.textContent;
-                if (text && text.trim().length > 100) { // Only consider substantial content
-                    return text.trim();
-                }
+    OPROGRAMOWANIE JEST DOSTARCZANE „TAK JAK JEST”, BEZ JAKIEJKOLWIEK GWARANCJI,
+    WYRAŹNEJ LUB DOROZUMIANEJ, W TYM MIĘDZY INNYMI GWARANCJI PRZYDATNOŚCI
+    HANDLOWEJ, PRZYDATNOŚCI DO OKREŚLONEGO CELU ORAZ NIENARUSZANIA PRAW.
+    W ŻADNYM WYPADKU AUTORZY LUB POSIADACZE PRAW AUTORSKICH NIE PONOSZĄ
+    ODPOWIEDZIALNOŚCI ZA JAKIEKOLWIEK ROSZCZENIA, SZKODY LUB INNE ZOBOWIĄZANIA,
+    CZY TO W WYNIKU UMOWY, CZYNU NIEDOZWOLONEGO, CZY W INNY SPOSÓB,
+    WYNIKAJĄCE Z OPROGRAMOWANIA LUB KORZYSTANIA Z NIEGO LUB INNYCH DZIAŁAŃ
+    ZWIĄZANYCH Z OPROGRAMOWANIEM.
+    `.replace(/^ +/gm, '').trim();
+
+    // DOM Helpers
+    const $ = (sel, el = document) => el.querySelector(sel);
+    const $$ = (sel, el = document) => Array.from(el.querySelectorAll(sel));
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+    // UI Configuration
+    const styles = `
+        #mob-downloader-btn {
+            position: fixed; bottom: 20px; right: 20px; z-index: 99999;
+            padding: 10px 20px; background-color: #0052a5; color: white;
+            border: none; border-radius: 4px; font-weight: bold; cursor: pointer;
+            font-family: sans-serif; font-size: 13px; display: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        #mob-downloader-btn.done {
+            background-color: #2e7d32;
+            cursor: default;
+            pointer-events: none;
+            opacity: 1;
+        }
+
+        #mob-console {
+            position: fixed; bottom: 60px; right: 20px; z-index: 99999;
+            width: 450px; max-height: 300px; overflow-y: auto;
+            background: rgba(0, 0, 0, 0.9); color: #0f0;
+            font-family: monospace; font-size: 11px; padding: 10px;
+            border-radius: 4px; display: none; border: 1px solid #333;
+            pointer-events: none;
+        }
+        .mob-log-line { border-bottom: 1px solid #333; padding: 2px 0; }
+        .mob-type { color: #00bfff; font-weight: bold; margin-left: 5px; }
+    `;
+    document.head.insertAdjacentHTML('beforeend', `<style>${styles}</style>`);
+
+    const btn = document.createElement('button');
+    btn.id = 'mob-downloader-btn';
+    btn.innerText = 'DOWNLOAD SOURCE';
+    document.body.appendChild(btn);
+
+    const consoleDiv = document.createElement('div');
+    consoleDiv.id = 'mob-console';
+    document.body.appendChild(consoleDiv);
+
+    const log = (msg) => {
+        consoleDiv.style.display = 'block';
+        consoleDiv.insertAdjacentHTML('afterbegin', `<div class="mob-log-line">&gt; ${msg}</div>`);
+    };
+
+    // Logic
+
+    // Removes file headers and line numbers from text content
+    function cleanCodeContent(text, filename) {
+        if (!text) return "";
+        let lines = text.split('\n');
+
+        // Remove filename header if present in first 3 lines
+        for (let i = 0; i < Math.min(lines.length, 3); i++) {
+            if (lines[i].trim() === filename.trim()) lines[i] = '';
+        }
+
+        // Detect line number column width
+        let prefixWidth = 0;
+        let detected = false;
+
+        for (let i = 0; i < Math.min(lines.length, 30); i++) {
+            const match = lines[i].match(/^(\s*\d+[\s\t]+)/);
+            if (match) {
+                prefixWidth = match[1].length;
+                detected = true;
+                break;
             }
         }
-        
-        // Fallback: try to get all text content from the main content area
-        const mainContent = document.querySelector("main, .content, .main, #main, .container");
-        if (mainContent) {
-            const text = mainContent.innerText || mainContent.textContent;
-            if (text && text.trim().length > 100) {
-                return text.trim();
-            }
+
+        // Strip line numbers
+        if (detected && prefixWidth > 0) {
+            lines = lines.map(line => line.length <= prefixWidth ? '' : line.substring(prefixWidth));
         }
-        
-        return null;
+
+        // Trim end of lines and remove empty leading lines
+        return lines.map(l => l.trimEnd()).join('\n').trimStart();
     }
 
-    // Function to determine MIME type based on filename
-    function getMimeType(filename) {
-        const ext = filename.split('.').pop().toLowerCase();
-        const mimeTypes = {
-            'svg': 'image/svg+xml',
-            'xml': 'application/xml',
-            'json': 'application/json',
-            'html': 'text/html',
-            'htm': 'text/html',
-            'css': 'text/css',
-            'js': 'text/javascript',
-            'ts': 'text/typescript',
-            'kt': 'text/x-kotlin',
-            'java': 'text/x-java',
-            'swift': 'text/x-swift',
-            'py': 'text/x-python',
-            'rb': 'text/x-ruby',
-            'go': 'text/x-go',
-            'rs': 'text/x-rust',
-            'c': 'text/x-c',
-            'cpp': 'text/x-c++',
-            'h': 'text/x-c',
-            'm': 'text/x-objc',
-            'dart': 'text/x-dart',
-            'php': 'text/x-php',
-            'gradle': 'text/x-gradle',
-            'md': 'text/markdown',
-            'txt': 'text/plain',
-            'yml': 'text/yaml',
-            'yaml': 'text/yaml',
-            'properties': 'text/plain',
-            'ini': 'text/plain',
-            'conf': 'text/plain'
-        };
-        return mimeTypes[ext] || 'text/plain';
-    }
-
-    // Function to download file with proper MIME type
-    function downloadFile(filename, content) {
-        const mimeType = getMimeType(filename);
-        const blob = new Blob([content], { type: mimeType });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        console.log(`Downloaded: ${filename} (${mimeType})`);
-    }
-
-    // Function to download file with directory structure (uses path as filename)
-    function downloadFileWithPath(filepath, content) {
-        // Replace path separators with a safe character for filename
-        // This creates files like: "src__main__java__com__example__App.java"
-        const safeFilename = filepath.replace(/\//g, '__');
-        const mimeType = getMimeType(filepath);
-        const blob = new Blob([content], { type: mimeType });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = safeFilename;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        console.log(`Downloaded: ${safeFilename} (original path: ${filepath})`);
-        return safeFilename;
-    }
-
-    // Function to extract all file links from the tree view with full paths
-    function getAllFileLinks() {
-        const files = [];
-        const codeExtensions = ['.kt', '.swift', '.java', '.xml', '.gradle', '.json', '.m', '.h', '.cpp', '.c', '.py', '.js', '.ts', '.dart', '.php', '.rb', '.go', '.rs', '.svg', '.png', '.jpg', '.gif', '.txt', '.md', '.yml', '.yaml', '.ini', '.conf', '.properties', '.plist', '.strings', '.storyboard', '.xib', '.html'];
-        
-        // Find the mat-tree element
-        const matTree = document.querySelector('mat-tree');
-        if (!matTree) {
-            console.log('No mat-tree found, falling back to link search');
-            return getAllFileLinksFromLinks();
+    // Handles double extensions like .iml.html correctly
+    function cleanFilename(name) {
+        if (name.endsWith('.html')) {
+            const base = name.slice(0, -5);
+            // If another extension exists (ds.iml), return it. Else keep original (index.html).
+            if (base.includes('.')) return base;
         }
-        
-        // Get all tree nodes
-        const treeNodes = matTree.querySelectorAll('mat-tree-node');
-        
-        // Build the tree structure by tracking the path at each level
-        const pathStack = []; // Stack to track folder path at each level
-        
-        treeNodes.forEach((node, index) => {
-            const level = parseInt(node.getAttribute('aria-level') || '1');
-            const button = node.querySelector('gds-button button');
-            if (!button) return;
-            
-            const ariaLabel = button.getAttribute('aria-label');
-            const buttonText = button.textContent.trim();
-            
-            // Check if this is a folder (has "Toggle" in aria-label) or a file
-            const isFolder = ariaLabel && ariaLabel.startsWith('Toggle ');
-            const name = isFolder ? ariaLabel.replace('Toggle ', '') : buttonText;
-            
-            // Update path stack to current level
-            while (pathStack.length >= level) {
-                pathStack.pop();
-            }
-            
-            if (isFolder) {
-                // Add folder to path stack
-                pathStack.push(name);
-            } else {
-                // This is a file - construct full path
-                // Remove .html suffix from filename (they add .html to all files)
-                let filename = name;
-                if (filename.endsWith('.html') && !filename.endsWith('.json.html')) {
-                    // Check if it's a double extension like .swift.html
-                    const withoutHtml = filename.slice(0, -5);
-                    if (codeExtensions.some(ext => withoutHtml.endsWith(ext))) {
-                        filename = withoutHtml;
-                    }
-                } else if (filename.endsWith('.json.html')) {
-                    filename = filename.slice(0, -5); // Remove just .html, keep .json
-                }
-                
-                const fullPath = [...pathStack, filename].join('/');
-                
-                // Check if it has a recognizable file extension
-                const hasCodeExtension = codeExtensions.some(ext => filename.toLowerCase().endsWith(ext));
-                
-                if (hasCodeExtension || filename.includes('.')) {
-                    files.push({
-                        element: button,
-                        node: node,
-                        filename: filename,
-                        fullPath: fullPath,
-                        level: level
-                    });
-                }
-            }
-        });
-        
-        console.log('Found files from tree view:', files);
-        return files;
-    }
-    
-    // Fallback function to get links from <a> elements
-    function getAllFileLinksFromLinks() {
-        const links = [];
-        const codeExtensions = ['.kt', '.swift', '.java', '.xml', '.gradle', '.json', '.m', '.h', '.cpp', '.c', '.py', '.js', '.ts', '.dart', '.php', '.rb', '.go', '.rs', '.svg', '.png', '.jpg', '.gif', '.txt', '.md', '.yml', '.yaml', '.ini', '.conf', '.properties', '.plist', '.strings', '.storyboard', '.xib'];
-        
-        const allLinks = document.querySelectorAll('a');
-        allLinks.forEach(link => {
-            const href = link.getAttribute('href');
-            const text = (link.innerText || link.textContent || '').trim();
-            
-            const isCodeFile = codeExtensions.some(ext => {
-                return (href && href.toLowerCase().endsWith(ext)) || 
-                       (text && text.toLowerCase().endsWith(ext));
-            });
-            
-            if (isCodeFile && href) {
-                links.push({
-                    url: link.href,
-                    text: text,
-                    fullPath: text,
-                    filename: text
-                });
-            }
-        });
-        
-        return links;
+        return name;
     }
 
-    // Create download button
-    function createDownloadButton() {
-        const button = document.createElement('button');
-        button.innerText = '💾 Download Current File';
-        button.style.cssText = `
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            z-index: 10000;
-            padding: 10px 20px;
-            background-color: #0052a5;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-        `;
-        button.className = 'mobywatel-downloader';
-        button.addEventListener('click', () => {
-            const filename = getCurrentFileName();
-            const content = getFileContent();
-            
-            if (filename && content) {
-                downloadFile(filename, content);
-                alert(`File "${filename}" downloaded successfully!`);
-            } else {
-                alert('Could not extract filename or content. Check console for details.');
-                console.log('Filename:', filename);
-                console.log('Content:', content);
-            }
-        });
-        document.body.appendChild(button);
+    // Binary files and SVGs should be fetched as Blobs
+    function shouldUseFetch(filename) {
+        return /\.(svg|png|jpg|jpeg|gif|ico|webp|ttf|woff|woff2|eot|pdf|zip|mp4|mov)$/i.test(filename);
     }
 
-    // Create download all button
-    function createDownloadAllButton() {
-        const button = document.createElement('button');
-        button.innerText = '📦 Download All Files';
-        button.style.cssText = `
-            position: fixed;
-            top: 50px;
-            right: 10px;
-            z-index: 10000;
-            padding: 10px 20px;
-            background-color: #0c5aa9;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-        `;
-        button.className = 'mobywatel-downloader';
-        
-        button.addEventListener('click', async () => {
-            const files = getAllFileLinks();
-            if (files.length === 0) {
-                alert('No files found in the tree view.\n\nMake sure you are on a page with a file tree (mogp-tree-view).');
-                return;
-            }
-            
-            const confirmDownload = confirm(`Found ${files.length} files in tree view.\n\nStart downloading all files?\n\nFiles will be saved with directory structure preserved in the filename (e.g., "Sources__Components__Button.swift")`);
-            if (!confirmDownload) return;
-            
-            // Create a progress indicator
-            const progressDiv = document.createElement('div');
-            progressDiv.className = 'mobywatel-downloader';
-            progressDiv.style.cssText = `
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                z-index: 10001;
-                padding: 20px;
-                background-color: rgba(0, 82, 165, 0.95);
-                color: white;
-                border-radius: 10px;
-                font-size: 14px;
-                text-align: center;
-                min-width: 300px;
-            `;
-            document.body.appendChild(progressDiv);
-            
-            const downloadedFiles = [];
-            const failedFiles = [];
-            
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                progressDiv.innerHTML = `<strong>Downloading...</strong><br><br>File ${i + 1} of ${files.length}<br><br><small>${file.fullPath}</small>`;
-                
-                try {
-                    // Click on the file button to load it
-                    if (file.element) {
-                        file.element.click();
-                    }
-                    
-                    // Wait for iframe content to load
-                    await new Promise(resolve => setTimeout(resolve, 1500));
-                    
-                    // Get the content
-                    const content = getFileContent();
-                    
-                    if (content && content.length > 0) {
-                        // Download with path in filename
-                        downloadFileWithPath(file.fullPath, content);
-                        downloadedFiles.push(file.fullPath);
-                    } else {
-                        console.log(`No content found for: ${file.fullPath}`);
-                        failedFiles.push(file.fullPath);
-                    }
-                    
-                    // Small delay between downloads
-                    await new Promise(resolve => setTimeout(resolve, 500));
-                    
-                } catch (err) {
-                    console.error(`Error downloading ${file.fullPath}:`, err);
-                    failedFiles.push(file.fullPath);
-                }
-            }
-            
-            // Create and download manifest
-            const manifest = createDirectoryManifest(downloadedFiles, failedFiles);
-            downloadFile('_DIRECTORY_STRUCTURE.txt', manifest);
-            
-            progressDiv.remove();
-            
-            alert(`Download complete!\n\n✅ Downloaded: ${downloadedFiles.length} files\n❌ Failed: ${failedFiles.length} files\n\nA manifest file (_DIRECTORY_STRUCTURE.txt) was created with the directory structure.`);
-        });
-        
-        document.body.appendChild(button);
-    }
-    
-    // Function to create a directory structure manifest
-    function createDirectoryManifest(downloadedFiles, failedFiles) {
-        let manifest = "# mObywatel Source Code - Directory Structure\n";
-        manifest += "# Downloaded on: " + new Date().toISOString() + "\n\n";
-        manifest += "Files are named with path separators replaced by '__'\n";
-        manifest += "To restore the original structure, rename files replacing '__' with '/'\n\n";
-        manifest += "## Successfully Downloaded Files:\n\n";
-        
-        downloadedFiles.forEach(path => {
-            const safeName = path.replace(/\//g, '__');
-            manifest += `${safeName}\n  → Original path: ${path}\n\n`;
-        });
-        
-        if (failedFiles.length > 0) {
-            manifest += "\n## Failed Downloads:\n\n";
-            failedFiles.forEach(path => {
-                manifest += `- ${path}\n`;
-            });
-        }
-        
-        return manifest;
+    function getZipFilename() {
+        const url = window.location.href.toLowerCase();
+        if (url.includes('/android')) return 'mObywatel-Android.zip';
+        if (url.includes('/ios')) return 'mObywatel-iOS.zip';
+        return 'mObywatel-Source.zip';
     }
 
-    // Create manual trigger button
-    function createManualTriggerButton() {
-        const button = document.createElement('button');
-        button.innerText = '� Refresh Downloader';
-        button.style.cssText = `
-            position: fixed;
-            top: 90px;
-            right: 10px;
-            z-index: 10000;
-            padding: 10px 20px;
-            background-color: #1963ae;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-        `;
-        button.addEventListener('click', () => {
-            // Remove existing buttons and panels
-            document.querySelectorAll('.mobywatel-downloader').forEach(el => el.remove());
-            
-            // Re-initialize
-            setTimeout(() => {
-                const filename = getCurrentFileName();
-                const fileLinks = getAllFileLinks();
-                const content = getFileContent();
-                
-                createDownloadButton();
-                createDownloadAllButton();
-                createInfoPanel();
-                
-                alert(`Refreshed!\nFilename: ${filename}\nFiles found: ${fileLinks.length}\nContent: ${content ? content.length + ' chars' : 'none'}`);
-            }, 500);
-        });
-        button.className = 'mobywatel-downloader';
-        document.body.appendChild(button);
+    // Reset button state when navigating away
+    function resetButton() {
+        btn.classList.remove('done');
+        btn.innerText = 'DOWNLOAD SOURCE';
+        btn.style.display = 'none';
+        btn.disabled = false;
+        btn.onclick = mainClickHandler;
+        consoleDiv.style.display = 'none';
+        consoleDiv.innerHTML = '';
     }
 
-    // Create info panel
-    function createInfoPanel() {
-        const panel = document.createElement('div');
-        panel.style.cssText = `
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            z-index: 10000;
-            padding: 10px;
-            background-color: rgba(0, 82, 165, 0.9);
-            color: white;
-            border-radius: 5px;
-            font-size: 12px;
-            max-width: 300px;
-            font-family: monospace;
-        `;
-        
-        const filename = getCurrentFileName();
-        const fileLinks = getAllFileLinks();
-        const content = getFileContent();
-        
-        const treeFilesInfo = fileLinks.length > 0 ? 
-            `<br><small>First: ${fileLinks[0].fullPath}</small>` : '';
-        
-        panel.innerHTML = `
-            <strong>mObywatel Downloader</strong><br>
-            Current file: ${filename || 'N/A'}<br>
-            Files in tree: ${fileLinks.length}${treeFilesInfo}<br>
-            Content: ${content ? content.length + ' chars' : 'No iframe content'}<br>
-            <button onclick="console.log('=== DEBUG INFO ==='); console.log('Filename:', '${filename}'); console.log('Content length:', ${content ? content.length : 0}); console.log('Files found:', ${fileLinks.length}); console.log('Files:', JSON.parse('${JSON.stringify(fileLinks).replace(/'/g, "\\'")}'));">Debug Info</button>
-        `;
-        panel.className = 'mobywatel-downloader';
-        document.body.appendChild(panel);
-    }
-    function init() {
-        // Wait for page to be fully loaded
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', init);
+    // SPA Observer
+    new MutationObserver(() => {
+        const isProjectPage = /android|ios/i.test(window.location.href);
+        const hasTree = !!$('mat-tree');
+
+        // Check if we left the project page
+        if (!isProjectPage || !hasTree) {
+            // Only reset if visible to avoid redundant calls
+            if (btn.style.display !== 'none') {
+                resetButton();
+            }
             return;
         }
-        
-        // For SPAs, wait a bit more for dynamic content
-        setTimeout(() => {
-            const filename = getCurrentFileName();
-            const fileLinks = getAllFileLinks();
-            const content = getFileContent();
-            
-            // Only show if we found some content or are on a code page
-            if (filename !== 'unknown-file.txt' || fileLinks.length > 0 || content) {
-                createDownloadButton();
-                createDownloadAllButton();
-                createManualTriggerButton();
-                createInfoPanel();
-                console.log('mObywatel Code Gallery Downloader initialized');
-                console.log('Found filename:', filename);
-                console.log('Found file links:', fileLinks.length);
-                console.log('Content length:', content ? content.length : 0);
-            } else {
-                console.log('mObywatel Downloader: No code content detected yet. Will retry...');
-                // Show manual trigger even if no content detected
-                createManualTriggerButton();
-                createInfoPanel();
-                // Retry after another delay for slow-loading content
-                setTimeout(init, 3000);
+
+        // Show button if we are on project page and it is not done
+        if (!btn.classList.contains('done')) {
+            btn.style.display = 'block';
+        }
+    }).observe(document.body, { childList: true, subtree: true });
+
+    // Main Handler
+    async function mainClickHandler() {
+        if (btn.classList.contains('done')) return;
+        // Disable click immediately
+        btn.onclick = null;
+        btn.innerText = "PROCESSING...";
+
+        let fflate;
+        try {
+            log("Initializing libraries...");
+            fflate = await import('https://cdn.jsdelivr.net/npm/fflate@0.8.2/+esm');
+        } catch (e) {
+            alert("Init error: " + e.message);
+            btn.disabled = false;
+            // Restore handler on error
+            btn.onclick = mainClickHandler;
+            return;
+        }
+
+        const filesToZip = {};
+
+        // Phase 1: Expand Directory Tree
+        log("Scanning directory structure...");
+        const emptyFolders = new Set();
+        let expansionNeeded = true;
+
+        while (expansionNeeded) {
+            expansionNeeded = false;
+            const nodes = $$('mat-tree-node');
+
+            for (const node of nodes) {
+                const button = $('button', node);
+                if (!button) continue;
+
+                const label = button.getAttribute('aria-label') || "";
+                const level = parseInt(node.getAttribute('aria-level') || '1');
+                const text = button.innerText.trim();
+                const nodeId = `${level}__${text}`;
+
+                if (label.includes('Toggle')) {
+                    let isExpanded = false;
+                    const nextNode = node.nextElementSibling;
+                    // Check if next node is a child (higher indentation level)
+                    if (nextNode) {
+                        const nextLevel = parseInt(nextNode.getAttribute('aria-level') || '1');
+                        if (nextLevel > level) isExpanded = true;
+                    }
+
+                    if (!isExpanded && !emptyFolders.has(nodeId)) {
+                        log(`Expanding: ${text}`);
+                        node.scrollIntoView({ block: 'center', behavior: 'instant' });
+                        const countBefore = $$('mat-tree-node').length;
+
+                        button.click();
+
+                        // Wait for Angular to update DOM
+                        let waits = 0;
+                        while(waits < 40) {
+                            await sleep(50);
+                            if ($$('mat-tree-node').length > countBefore) {
+                                expansionNeeded = true; break;
+                            }
+                            waits++;
+                        }
+                        if (!expansionNeeded) emptyFolders.add(nodeId);
+                        else break; // Restart loop on DOM change
+                    }
+                }
             }
-        }, 2000);
+        }
+
+        // Phase 2: Download Files
+        log("Downloading files...");
+        const finalNodes = $$('mat-tree-node');
+        let pathStack = [];
+        let fileCount = 0;
+
+        for (const node of finalNodes) {
+            const level = parseInt(node.getAttribute('aria-level') || '1');
+            const button = $('button', node);
+            const label = button.getAttribute('aria-label') || "";
+            const rawText = button.innerText.trim();
+            const isFolder = label.includes('Toggle');
+            const name = isFolder ? label.replace('Toggle ', '').trim() : rawText;
+
+            pathStack = pathStack.slice(0, level - 1);
+
+            if (isFolder) {
+                pathStack.push(name);
+            } else {
+                const fileName = cleanFilename(name);
+                const fullPath = [...pathStack, fileName].join('/');
+
+                const isFetchMode = shouldUseFetch(fileName);
+                const modeLabel = isFetchMode ? '[BLOB]' : '[TEXT]';
+
+                log(`[${++fileCount}] ${fileName} <span class="mob-type">${modeLabel}</span>`);
+                node.scrollIntoView({ block: 'center', behavior: 'instant' });
+
+                // Reset iframe to detect load event via src change
+                const iframe = $('iframe');
+                if (iframe) iframe.src = 'about:blank';
+
+                button.click();
+
+                let newBlobUrl = null;
+                let attempts = 0;
+                while (attempts < 100) {
+                    const curr = $('iframe');
+                    if (curr?.src?.startsWith('blob:')) {
+                        if (!isFetchMode) {
+                            // Ensure text content is rendered
+                            if (curr.contentDocument?.body?.innerText.trim().length > 0) {
+                                newBlobUrl = curr.src; break;
+                            }
+                        } else {
+                            newBlobUrl = curr.src; break;
+                        }
+                    }
+                    await sleep(50);
+                    attempts++;
+                }
+
+                if (newBlobUrl) {
+                    try {
+                        if (isFetchMode) {
+                            // Binary/SVG: Fetch blob directly to preserve exact bytes
+                            const resp = await fetch(newBlobUrl);
+                            filesToZip[fullPath] = new Uint8Array(await resp.arrayBuffer());
+                        } else {
+                            // Code: Extract text from DOM to strip visualization artifacts
+                            const rawText = $('iframe').contentDocument.body.innerText || "";
+                            filesToZip[fullPath] = fflate.strToU8(cleanCodeContent(rawText, fileName));
+                        }
+                    } catch (e) {
+                        log(`Error: ${e.message}`);
+                        filesToZip[fullPath + ".error.txt"] = fflate.strToU8(e.message);
+                    }
+                } else {
+                    log(`Timeout: ${fileName}`);
+                    filesToZip[fullPath + ".empty"] = fflate.strToU8("Error/Timeout");
+                }
+            }
+        }
+
+        // Phase 3: Save ZIP
+        log("Generating ZIP...");
+        const outputFilename = getZipFilename();
+
+        try {
+            // Add LICENSE
+            filesToZip["LICENSE"] = fflate.strToU8(LICENSE_TEXT);
+            // Level 0: Store (No compression) for speed (user will unpack it later anyway)
+            const zipped = fflate.zipSync(filesToZip, { level: 0 });
+            const blob = new Blob([zipped], { type: 'application/zip' });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = outputFilename;
+            document.body.appendChild(a);
+            a.click();
+
+            setTimeout(() => { a.remove(); URL.revokeObjectURL(url); }, 100);
+
+            log("Success!");
+            btn.innerText = "DONE";
+            btn.classList.add('done');
+            // onclick is already null here
+            setTimeout(() => { consoleDiv.style.display = 'none'; }, 4000);
+
+        } catch (e) {
+            log(`ZIP Error: ${e.message}`);
+            alert("ZIP Error: " + e.message);
+            btn.innerText = "ERROR";
+            btn.disabled = false;
+            // Restore handler so user can try again
+            btn.onclick = mainClickHandler;
+        }
     }
 
-    // Start the script
-    init();
+    // Initial listener assignment
+    btn.onclick = mainClickHandler;
+
 })();
