@@ -26,9 +26,9 @@ Wyobraźmy sobie, że mObywatel jest wielkim kompleksem budowli, mieliśmy pozna
 
 W tym repozytorium znajdziesz narzędzie, które automatyzuje cały proces: od skanowania drzewa plików, przez czyszczenie kodu z numerów linii, aż po generowanie gotowego archiwum ZIP.
 
-| Narzędzie                                                                      | Funkcja                                                                                       |
-| :----------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------- |
-| [**mobywatel-downloader-userscript.js**](./mobywatel-downloader-userscript.js) | Pobiera całe repozytorium (Android lub iOS) jako czysty plik ZIP bezpośrednio z przeglądarki. |
+| Narzędzie                                                          | Funkcja                                                                                       |
+| :----------------------------------------------------------------- | :-------------------------------------------------------------------------------------------- |
+| [**mobywatel-downloader.user.js**](./mobywatel-downloader.user.js) | Pobiera całe repozytorium (Android lub iOS) jako czysty plik ZIP bezpośrednio z przeglądarki. |
 
 ### 1. Przygotowanie przeglądarki
 
@@ -37,7 +37,8 @@ Do uruchomienia skryptu wymagany jest dodatek typu Userscript Manager.
 - **Rekomendowane rozwiązanie:** Przeglądarka **Firefox** + dodatek [**Violentmonkey**](https://addons.mozilla.org/pl/firefox/addon/violentmonkey/).
 - **Dla przeglądarek Chromium** (Chrome, Edge, Brave): Dodatek [**ScriptCat**](https://chromewebstore.google.com/detail/ndcooeababalnlpkfedmmbbbgkljhpjf).
 
-> [!IMPORTANT] Uwaga dla użytkowników Chrome (Manifest V3):
+> [!IMPORTANT]
+> Uwaga dla użytkowników Chrome (Manifest V3):
 > Google Chrome ogranicza działanie skryptów. Aby narzędzie działało poprawnie:
 >
 > 1. Włącz **Tryb Dewelopera** w ustawieniach rozszerzeń.
@@ -47,7 +48,7 @@ Do uruchomienia skryptu wymagany jest dodatek typu Userscript Manager.
 
 1. **Instalacja dodatku:** Zainstaluj wybrany manager skryptów w przeglądarce.
    - **Ważne:** Jeśli używasz Chrome/Edge, musisz dodatkowo włączyć **Tryb Dewelopera** oraz zezwolić rozszerzeniu na uruchamianie skryptów użytkownika (szczegóły w sekcji powyżej).
-2. W tym repozytorium znajdź plik [mobywatel-downloader-userscript.js](./mobywatel-downloader-userscript.js) i wybierz przycisk **"Raw"**, następnie zatwierdź instalację skryptu w oknie dodatku.
+2. W tym repozytorium znajdź plik [mobywatel-downloader.user.js](./mobywatel-downloader.user.js) i wybierz przycisk **"Raw"**, następnie zatwierdź instalację skryptu w oknie dodatku.
 3. Zaloguj się na oficjalną stronę: [mObywatel - Kod źródłowy](https://www.mobywatel.gov.pl/kod-zrodlowy-mobywatel-mobilny).
 4. Przejdź do sekcji Android lub iOS.
 5. Kliknij niebieski przycisk **DOWNLOAD SOURCE**, który pojawi się w prawym dolnym rogu ekranu.
@@ -65,10 +66,12 @@ Udostępnione narzędzie zostało zaprojektowane z poszanowaniem zasad bezpiecze
 ---
 
 ## Publikacje medialne
+
 > [!NOTE]
 > Poniższe artykuły i oficjalne komunikaty są dostępne w języku polskim.
 
 ### Ministerstwo Cyfryzacji opublikowało kod źródłowy mObywatela
+
 **Źródło:** https://www.gov.pl/web/cyfryzacja/ministerstwo-cyfryzacji-opublikowalo-kod-zrodlowy-mobywatela
 
 Zgodnie z przepisami resort cyfryzacji udostępnił kod źródłowy aplikacji mObywatel - dzięki temu każdy może lepiej poznać rządową aplikację, z której korzysta już blisko 11 milionów Polek i Polaków.
@@ -80,6 +83,7 @@ Link do kodu aplikacji mObywatel został zamieszczony w Biuletynie Informacji Pu
 ---
 
 ### Kod źródłowy aplikacji mObywatel (BIP)
+
 **Źródło:** https://mc.bip.gov.pl/aplikacja-mobywatel/kod-zrodlowy-aplikacji-mobywatel.html
 
 Zgodnie z obowiązkiem ustawowym wynikającym z ustawy z dnia 26 maja 2023 r. o aplikacji mObywatel (Dz. U. z 2023 r. poz. 1234), Minister Cyfryzacji publikuje informację o udostępnieniu kodu źródłowego aplikacji mObywatel.
@@ -93,6 +97,7 @@ Kod źródłowy aplikacji mObywatel został udostępniony do publicznego wglądu
 ---
 
 ### Analizujemy opinię CSIRT MON w sprawie publikacji kodu mObywatela
+
 **Źródło:** https://kontrabanda.net/r/analizujemy-opinie-csirt-mon-w-sprawie-publikacji-kodu-mobywatela/
 
 Artykuł zawiera kopię .pdf oficjalnej opinii CSIRT MON w tej sprawie.
