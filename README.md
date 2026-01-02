@@ -27,6 +27,11 @@ Wyobraźmy sobie, że mObywatel jest wielkim kompleksem budowli, mieliśmy pozna
 
 
 ## Publikacje medialne
+### Wypowiedź CEO COI ws. licencji MIT
+(...) Publikacja kodu odbywa się na podstawie opinii CSIRTów, stąd takie rozwiązanie i zakres kodu (może nie aż tak obszerny). Publikując kod raczej powinniśmy nałożyć licencję opensource i została wybrana MIT jako najbardziej odpowiednia. Ukraina też opublikowała na licencji, tylko wybrała EUPL 1.2.
+
+~ Radosław Maćkiewicz
+Źródło: Dyskusja na [LinkedIn](https://www.linkedin.com/feed/update/urn:li:activity:7411457386525220866?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7411457386525220866%2C7411458791025676288%29&replyUrn=urn%3Ali%3Acomment%3A%28activity%3A7411457386525220866%2C7411470169593794560%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287411458791025676288%2Curn%3Ali%3Aactivity%3A7411457386525220866%29&dashReplyUrn=urn%3Ali%3Afsd_comment%3A%287411470169593794560%2Curn%3Ali%3Aactivity%3A7411457386525220866%29) pod postem Pana posła [Michała Gramatyki](https://pl.wikipedia.org/wiki/Micha%C5%82_Gramatyka)
 ### Ministerstwo Cyfryzacji opublikowało kod źródłowy mObywatela
 Źródło: https://www.gov.pl/web/cyfryzacja/ministerstwo-cyfryzacji-opublikowalo-kod-zrodlowy-mobywatela
 
