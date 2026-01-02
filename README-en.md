@@ -25,6 +25,11 @@ Imagine that mObywatel is a large building complex. We were supposed to learn th
 
 
 ## Media publications
+### Statement from the COI CEO regarding the MIT license
+(...) The publication of the code is based on the opinions of CSIRTs, hence this solution and the scope of the code (perhaps not so extensive). When publishing code, we should rather apply an open-source license, and MIT was chosen as the most appropriate. Ukraine also published under a license, only they chose EUPL 1.2.
+
+~ Radosław Maćkiewicz
+Source: Discussion on [LinkedIn](https://www.linkedin.com/feed/update/urn:li:activity:7411457386525220866?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7411457386525220866%2C7411458791025676288%29&replyUrn=urn%3Ali%3Acomment%3A%28activity%3A7411457386525220866%2C7411470169593794560%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287411458791025676288%2Curn%3Ali%3Aactivity%3A7411457386525220866%29&dashReplyUrn=urn%3Ali%3Afsd_comment%3A%287411470169593794560%2Curn%3Ali%3Aactivity%3A7411457386525220866%29) under the post by MP [Michał Gramatyka](https://pl.wikipedia.org/wiki/Micha%C5%82_Gramatyka)
 ### Ministry of Digital Affairs published mObywatel's source code [pl]
 Source: https://www.gov.pl/web/cyfryzacja/ministerstwo-cyfryzacji-opublikowalo-kod-zrodlowy-mobywatela
 
