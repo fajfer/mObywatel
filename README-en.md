@@ -51,3 +51,10 @@ The source code of the mObywatel application has been made available for public 
 Source: https://kontrabanda.net/r/analizujemy-opinie-csirt-mon-w-sprawie-publikacji-kodu-mobywatela/
 
 The article contains a PDF copy of the CSIRT MON opinion on the subject matter.
+
+---
+### Statement from the COI CEO regarding the MIT license
+"(...) The publication of the code is based on the opinions of CSIRTs, hence this solution and the scope of the code (perhaps not so extensive). When publishing code, we should rather impose an open-source license, and MIT was chosen as the most appropriate one. Ukraine also published under a [free software] license, only they have chosen EUPL 1.2."
+
+Radosław Maćkiewicz, CEO of Centralny Ośrodek Informatyki \
+_Source: Discussion on [LinkedIn](https://www.linkedin.com/feed/update/urn:li:activity:7411457386525220866?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7411457386525220866%2C7411458791025676288%29&replyUrn=urn%3Ali%3Acomment%3A%28activity%3A7411457386525220866%2C7411470169593794560%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287411458791025676288%2Curn%3Ali%3Aactivity%3A7411457386525220866%29&dashReplyUrn=urn%3Ali%3Afsd_comment%3A%287411470169593794560%2Curn%3Ali%3Aactivity%3A7411457386525220866%29) ([screencap in Polish](rmackiewicz-mit.jpg)) under the post by Member of Parliament of the Republic of Poland [Michał Gramatyka](https://en.wikipedia.org/wiki/Micha%C5%82_Gramatyka)_
